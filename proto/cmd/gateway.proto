@@ -1,0 +1,313 @@
+syntax = "proto3";
+
+package cmd.gateway;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "cmd/types.proto";
+
+option go_package = "cmd/proto/gen/go/pb;pb";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info : {title : "接口文档" version : "1.0.0"}
+  host : "127.0.0.1:8888"
+  schemes : [ HTTP ]
+  security_definitions : {
+    security : {
+      key : "Authorization"
+      value : {type : TYPE_API_KEY in : IN_HEADER name : "Authorization"}
+    }
+    security : {
+      key : "satname"
+      value : {type : TYPE_API_KEY in : IN_HEADER name : "satname"}
+    }
+  }
+
+  security : {
+    security_requirement : {
+      key : "Authorization"
+      value : {}
+    }
+    security_requirement : {
+      key : "satname"
+      value : {}
+    }
+  }
+};
+
+
+
+message Empty {}
+
+message GetCMDListReq {
+  int32 limit = 2;
+  int32 offset = 3;
+  string mark = 4;
+  string packetName = 5;
+  string subSystem = 6;
+}
+
+message GetCMDListResp {
+  repeated cmd.types.CMD cmdList = 1;
+  int64 count = 2;
+}
+
+message GetCMDInfoReq { string mark = 2; }
+
+message GetCMDInfoResp { cmd.types.CMD cmd = 1; }
+
+message FillCMDTaskReq {
+  string taskID = 2;
+  repeated cmd.types.Param paramList = 3;
+  string delayTime = 4;
+}
+
+message FillCMDTaskResp {
+  cmd.types.CMD cmd = 1;
+  repeated cmd.types.Param paramList = 2;
+}
+
+message CreateCMDTaskReq { repeated string markList = 2; }
+
+message CreateCMDTaskResp { repeated string taskID = 1; }
+
+message GetCMDRecordListReq {
+  repeated int32 statusList = 2;
+  int32 offset = 3;
+  int32 limit = 4;
+  repeated string taskIDList = 5;
+  string mark = 7;
+  repeated string timeRange = 8;
+  string packetName = 9;
+  repeated string cplanIDList = 10; // cplanid
+  repeated string metaIDList = 11; // 元任务id
+}
+
+message GetCMDRecordListResp {
+  repeated cmd.types.CMDRecord recordList = 1;
+  int64 count = 2;
+}
+
+message GetCMDTaskListReq {
+  repeated string taskIDList = 1;
+  int32 offset = 2;
+  int32 limit = 3;
+  repeated int32 typeList = 4;
+}
+
+message GetCMDTaskListResp {
+  repeated cmd.types.CMDTask taskList = 1;
+  int64 count = 2;
+}
+
+message GetCMDTaskInfoReq { string taskID = 1; }
+
+message GetCMDTaskInfoResp {
+  cmd.types.CMDTask task = 1;
+  FillCMDTaskReq fillReq = 2;
+}
+
+message DeleteCmdTaskListReq { repeated string taskIDList = 1; }
+
+message DeleteCmdTaskListResp {}
+
+message UploadFileReq {}
+
+message UploadFileResp { string path = 1; }
+
+message GetSatelliteInfoReq {
+  string name = 1;
+}
+
+message GetSatelliteInfoResp { cmd.types.Satellite satellite = 1; }
+
+message ReverseCMDReq {
+  string outputValue = 1; // 指令编码
+}
+
+message ReverseCMDResp { repeated cmd.types.Param paramList = 1; }
+
+message SaveSatelliteReq { cmd.types.Satellite satellite = 1; }
+
+message SaveSatelliteResp {}
+
+message GetDestinationListReq {}
+
+message GetDestinationListResp {
+  repeated cmd.types.Destination destinationList = 1;
+}
+
+message GetCMDConfInfoReq {}
+
+message GetCMDConfInfoResp { cmd.types.CMDConf cmdConf = 1; }
+
+message SetCMDConfReq { cmd.types.CMDConf cmdConf = 1; }
+message SetCMDConfResp {}
+
+message SendCMDTakListReq { repeated string taskIDList = 1;
+  cmd.types.CMDConf cmdConf = 2;
+ }
+
+message SendCMDTakListResp {}
+
+message MergeCMDTaskReq {
+  string task1ID = 1;
+  string task2ID = 2;
+}
+
+message MergeCMDTaskResp { 
+  string taskID = 1; 
+  cmd.types.CMD cmd = 2;
+  repeated cmd.types.Param paramList = 3;
+}
+message IssueCplanReq {
+  cmd.types.Cplan cplan=1  ;
+}
+
+message GetSubSystemListReq{}
+message GetSubSystemListResp{
+  string name=1;
+}
+//
+service Gateway {
+  //
+  rpc GetCMDList(GetCMDListReq) returns (GetCMDListResp) {
+    option (google.api.http) = {
+      post : "/v1/cmd/getcmdlist"
+      body : "*"
+    };
+  }
+  //
+  rpc GetCMDInfo(GetCMDInfoReq) returns (GetCMDInfoResp) {
+    option (google.api.http) = {
+      post : "/v1/cmd/getcmdinfo"
+      body : "*"
+    };
+  }
+
+  //
+  rpc FillCMDTask(FillCMDTaskReq) returns (FillCMDTaskResp) {
+    option (google.api.http) = {
+      post : "/v1/cmd/fillcmdtask"
+      body : "*"
+    };
+  }
+
+  //
+  rpc CreateCMDTask(CreateCMDTaskReq) returns (CreateCMDTaskResp) {
+    option (google.api.http) = {
+      post : "/v1/cmd/createcmdtask"
+      body : "*"
+    };
+  }
+
+  // 指令记录列表:可以通过cplanid和metaid等信息查找对应的指令状态
+  rpc GetCMDRecordList(GetCMDRecordListReq) returns (GetCMDRecordListResp) {
+    option (google.api.http) = {
+      post : "/v1/cmd/getcmdrecordlist"
+      body : "*"
+    };
+  }
+  // 指令任务列表:
+  rpc GetCMDTaskList(GetCMDTaskListReq) returns (GetCMDTaskListResp) {
+    option (google.api.http) = {
+      post : "/v1/cmd/getcmdtasklist"
+      body : "*"
+    };
+  }
+  //
+  rpc GetCMDTaskInfo(GetCMDTaskInfoReq) returns (GetCMDTaskInfoResp) {
+    option (google.api.http) = {
+      post : "/v1/cmd/getcmdtaskinfo"
+      body : "*"
+    };
+  }
+
+  //
+  rpc DeleteCmdTaskList(DeleteCmdTaskListReq) returns (DeleteCmdTaskListResp) {
+    option (google.api.http) = {
+      post : "/v1/cmd/deletecmdtasklist"
+      body : "*"
+    };
+  }
+
+  // 发送指令:根据配置发送指令到gsio并同步返回结果
+  rpc SendCMDTakList(SendCMDTakListReq) returns (SendCMDTakListResp) {
+    option (google.api.http) = {
+      post : "/v1/cmd/sendcmdtasklist"
+      body : "*"
+    };
+  }
+  // 指令反演:根据指令编号和指令编码推出指令参数列表
+  rpc ReverseCMD(ReverseCMDReq) returns (ReverseCMDResp) {
+    option (google.api.http) = {
+      post : "/v1/cmd/reversecmd"
+      body : "*"
+    };
+  }
+  //
+  rpc UploadFile(UploadFileReq) returns (UploadFileResp) {
+    option (google.api.http) = {
+      post : "/v1/file/uploadfile"
+      body : "*"
+    };
+  }
+
+  //
+  rpc GetSatelliteInfo(GetSatelliteInfoReq) returns (GetSatelliteInfoResp) {
+    option (google.api.http) = {
+      post : "/v1/satellite/getsatelliteinfo"
+      body : "*"
+    };
+  }
+
+  //
+  rpc SaveSatellite(SaveSatelliteReq) returns (SaveSatelliteResp) {
+    option (google.api.http) = {
+      post : "/v1/satellite/savesatellite"
+      body : "*"
+    };
+  }
+  //
+  rpc GetDestinationList(GetDestinationListReq)
+      returns (GetDestinationListResp) {
+    option (google.api.http) = {
+      post : "/v1/satellite/getdestinationlist"
+      body : "*"
+    };
+  }
+  //
+  rpc GetCMDConfInfo(GetCMDConfInfoReq) returns (GetCMDConfInfoResp) {
+    option (google.api.http) = {
+      post : "/v1/satellite/getcmdconfinfo"
+      body : "*"
+    };
+  }
+  //
+  rpc SetCMDConf(SetCMDConfReq) returns (SetCMDConfResp) {
+    option (google.api.http) = {
+      post : "/v1/satellite/setcmdconf"
+      body : "*"
+    };
+  }
+  // 任务规划系统 下发 cplan
+  rpc IssueCplan(IssueCplanReq) returns (Empty) {
+    option (google.api.http) = {
+      post : "/v1/issuecplan"
+      body : "*"
+    };
+  }
+  //
+  rpc MergeCMDTask(MergeCMDTaskReq) returns (MergeCMDTaskResp) {
+    option (google.api.http) = {
+      post : "/v1/mergecmdtask"
+      body : "*"
+    };
+  }
+  //
+  rpc GetSubSystemList(GetSubSystemListReq) returns (GetSubSystemListResp) {
+    option (google.api.http) = {
+      post : "/v1/cmd/getsubsystemlist"
+      body : "*"
+    };
+  }
+}

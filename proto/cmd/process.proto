@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package cmd.prcoess;
+option go_package = "cmd/proto/gen/go/pb;pb";
+
+import "cmd/types.proto";
+
+message Excel2CMDListReq {
+  string filePath = 1;
+  cmd.types.Satellite satellite = 2;
+}
+
+message Excel2CMDListResp { repeated cmd.types.CMD cmdList = 1; 
+  repeated cmd.types.Param extralParamList=2;
+}
+
+// message GetCMDTempReq {
+//   cmd.types.CMD cmd = 1;
+//   repeated cmd.types.Param paramList = 2;
+//   string delayTime = 3;
+//   cmd.types.Satellite satellite = 4;
+// }
+// message GetCMDTempResp {
+//   cmd.types.Temp temp = 1;
+//   string code = 2;
+// }
+
+message ParamList2CMDReq {
+  cmd.types.CMD cmd = 1;
+  repeated cmd.types.Param paramList = 2;
+  string delayTime = 3;
+  cmd.types.Satellite satellite = 4;
+  repeated cmd.types.Param extralParamList = 5;
+}
+
+message ParamList2CMDResp {
+  cmd.types.CMD cmd = 1;
+  repeated cmd.types.Param paramList = 2;
+}
+
+message CMD2ParamListReq {
+  repeated cmd.types.CMD cmdList = 1;
+  cmd.types.Satellite satellite = 2;
+  cmd.types.CMD cmd = 3;
+  repeated cmd.types.Param extralParamList = 4;
+}
+
+message CMD2ParamListResp { repeated cmd.types.Param paramList = 1; }
+
+message MergeParamList2CMDReq {
+  ParamList2CMDReq req1 = 1;
+  ParamList2CMDReq req2 = 2;
+}
+
+message MergeParamList2CMDResp {
+  string outputValue = 1;
+  repeated cmd.types.Param paramList = 2;
+}
+
+message SplitParamList2CMDListReq {
+     cmd.types.CMD cmd = 1;
+repeated cmd.types.Param paramList = 2;
+  cmd.types.Satellite satellite = 3;
+}
+
+message SplitParamList2CMDListResp {
+repeated ParamList2CMDResp respList=1;
+}
+
+////////////////////////////////////////////////////////////////
+service Process {
+  rpc Excel2CMDList(Excel2CMDListReq) returns (Excel2CMDListResp);
+  // rpc GetCMDTemp(GetCMDTempReq) returns (GetCMDTempResp);
+  rpc ParamList2CMD(ParamList2CMDReq) returns (ParamList2CMDResp);
+  rpc CMD2ParamList(CMD2ParamListReq) returns (CMD2ParamListResp);
+  rpc MergeParamList2CMD(MergeParamList2CMDReq)
+      returns (MergeParamList2CMDResp);
+  rpc SplitParamList2CMDList(SplitParamList2CMDListReq)
+      returns (SplitParamList2CMDListResp);
+}

@@ -1,0 +1,28 @@
+version: v2
+plugins:
+  - remote: buf.build/protocolbuffers/go
+    out: /Users/zhouwenzhe/Code/microsate/new_cmd/cmd/proto/gen/go
+    opt: paths=source_relative
+  - remote: buf.build/grpc/go
+    out: /Users/zhouwenzhe/Code/microsate/new_cmd/cmd/proto/gen/go
+    opt:
+      - paths=source_relative
+  - remote: buf.build/grpc-ecosystem/gateway
+    out: /Users/zhouwenzhe/Code/microsate/new_cmd/cmd/proto/gen/gateway
+    opt:
+      - paths=source_relative
+  - remote: buf.build/grpc-ecosystem/openapiv2
+    out: /Users/zhouwenzhe/Code/microsate/new_cmd/cmd/proto/gen/openapiv2
+
+  - remote: buf.build/protocolbuffers/python
+    out: /Users/zhouwenzhe/Code/microsate/new_cmd/cmd/proto/gen/python
+  - remote: buf.build/grpc/python
+    out: /Users/zhouwenzhe/Code/microsate/new_cmd/cmd/proto/gen/python
+  - remote: buf.build/protocolbuffers/pyi
+    out: /Users/zhouwenzhe/Code/microsate/new_cmd/cmd/proto/gen/python
+
+  - protoc_builtin: cpp
+    protoc_path: /Users/zhouwenzhe/Code/microsate/keymgr/build/vcpkg_installed/arm64-osx/tools/protobuf/protoc-33.4.0
+    out: /Users/zhouwenzhe/Code/microsate/keymgr/include
+  # - local: /Users/zhouwenzhe/Code/microsate/keymgr/build/vcpkg_installed/arm64-osx/tools/grpc/grpc_cpp_plugin
+  #   out: gen/cpp

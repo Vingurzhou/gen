@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package keymgr.config;
+
+option go_package = "keymgr/proto/gen/go/pb;pb";
+
+message Config {
+  Service      key_mgr       = 1;
+  string       data_source   = 2;
+}
+
+message Service {
+    string host = 1;
+    uint32 port = 2;
+}

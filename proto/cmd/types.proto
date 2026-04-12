@@ -1,0 +1,151 @@
+syntax = "proto3";
+
+package cmd.types;
+option go_package = "cmd/proto/gen/go/pb;pb";
+import "google/protobuf/timestamp.proto";
+
+message Config {
+
+  message Gateway {
+    string host = 1;
+    string port = 2;
+  }
+
+  message Process {
+    string host = 1;
+    string port = 2;
+  }
+
+  message Gsio {
+    string host = 1;
+    string port = 2;
+  }
+
+  message Redisoptions {
+    string addr     = 1;
+    string password = 2;
+    uint32 db       = 3;
+  }
+
+  Gateway      gateway      = 1;
+  Process      process      = 2;
+  Gsio         gsio         = 3;
+  string       dataSource   = 4;
+  Redisoptions redisOptions = 5;
+  string       fileDir      = 6;
+}
+
+message Param {
+  string          inputName           = 1;
+  string          inputValue          = 2;
+  string          outputValue         = 3;
+  string          name                = 4; // 名称
+  string          inputType           = 5; // 输入
+  // string          outputType          = 6; // 输出
+  float           length              = 7; // 长度
+  string          content             = 8; // 内容
+  // string          unit                = 9; // 单位
+  // string          processMethod       = 10; // 处理方法
+  // string          coefficient         = 11; // 当量系数
+  repeated string physicalMeaningList = 12; // 物理意义列表
+  // string          range               = 13; // 范围
+  string          repeatTimes         = 14; // 重复次数
+}
+
+message CMD {
+  string         mark           = 1; // 代号
+  string         subSystem      = 2; // 分系统
+  string         packetName     = 3; // 遥控包名称
+  string         pid            = 4; // PID(b)
+  string         pcat           = 5; // PCAT(b)
+  string         packetLength   = 6; // 包长度
+  string         through        = 8; // 通过标识
+  string         internal       = 9; // 内务命令标识
+  string         virtualChannel = 10; // 虚拟信道识别字
+  string         code           = 11; // 指令码(H)
+  string         form           = 12; // 参数形式
+  repeated Param paramList      = 13; // 参数
+  string         outputValue    = 14;
+  string         type           = 15; // 上行遥控格式
+  string         user           = 16; // 用户勤务字
+}
+
+message CMDTask {
+  CMD      cmd      = 1; // 指令
+  bool     filled   = 2; // 是否装填
+  string   id       = 3; // 任务id
+  TaskType tasktype = 4; // 类型
+  enum TaskType {
+    Normal   = 0;
+    PlatForm = 1;
+    Cplan    = 2;
+    Merge    = 3;
+  }
+  string cplanID = 6; // cplanid
+  string metaID  = 7; // 元任务id
+  string fillReq = 8; // 请求
+}
+
+message CMDRecord {
+  CMDTask cmdTask = 1; // 指令任务
+  Status  status  = 2; // 状态
+  enum Status {
+    Succeed              = 0; // 发送成功
+    Failed               = 1; // 发送失败
+    CheckTeleMetryFailed = 2; // 遥测比对失败
+    TimeOut              = 3; // 发送超时
+  }
+  string  sentAt   = 4; // 发送时间
+  CMDConf cmdConf  = 5;
+  string  gsioSent = 6;
+  string  id       = 7;
+}
+
+message CMDConf {
+  Satellite satellite = 1;
+  bool        encrypted   = 3; // 是否加密
+  bool        scrambled   = 4; // 是否加扰
+  Destination destination = 5;
+}
+
+message Satellite {
+  string                    name            = 1;
+  google.protobuf.Timestamp epochTime       = 2;
+  string                    spacecraftValue = 3;
+  bool                      checkMetry      = 8; // 是否大环比对
+  string                    excel           = 10;
+  FillType                  fillType        = 12; // 装填类型
+  SendType                  sendType        = 13; // 发送类型
+  string                  seqMark        = 14; // 指令序列
+  enum FillType {
+    QZZYZC  = 0; // 轻舟正样综测系统
+    CYDM    = 1; // CY地面系统
+    MSCDM   = 2; // MSC地面系统
+    ETRESS2 = 3; // 埃塞俄比亚etrss-2卫星
+    ZHTW = 4; // 智慧天网
+    JIDI = 5; // 慧眼、极地
+  }
+  enum SendType {
+    Direct    = 0; // 直发
+    Emposat   = 1; // 驭星
+    AirSat    = 2; // 中科卫星
+    SIS       = 3; // sis
+    Transform = 4; // 地测
+  }
+}
+
+message Destination {
+  string name  = 1;
+  string value = 2;
+  string label = 3;
+}
+
+message Cplan {
+  string        cplanID       = 1;
+  repeated Meta metaList      = 2;
+  string        satelliteName = 3;
+  message Meta {
+    repeated CMD cmdList = 1;
+    string       metaID  = 2;
+  }
+}
