@@ -68,6 +68,7 @@ message CMD {
   string         outputValue    = 14;
   string         type           = 15; // 上行遥控格式
   string         user           = 16; // 用户勤务字
+  string         mapID           = 17; // 多路复用访问标识符
 }
 
 message CMDTask {
@@ -124,6 +125,7 @@ message Satellite {
     ETRESS2 = 3; // 埃塞俄比亚etrss-2卫星
     ZHTW = 4; // 智慧天网
     JIDI = 5; // 慧眼、极地
+    ETRESS2X = 6; // 埃塞俄比亚etrss-2卫星X频段
   }
   enum SendType {
     Direct    = 0; // 直发

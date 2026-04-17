@@ -1,12 +1,9 @@
 syntax = "proto3";
 package keymgr;
 
-
-import "keymgr/config.proto";
-
 option go_package = "keymgr/proto/gen/go/pb;pb";
 
 message BaseData {
   string msg = 1;
-  int64 code =2;
+  int64 code = 2;
 }
