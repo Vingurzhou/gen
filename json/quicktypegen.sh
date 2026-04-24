@@ -1,7 +1,6 @@
 quicktype json/qz --out gen/qz.json.go --lang go
 
 quicktype \
-  --src-lang json \
   json/qz \
   --lang cpp \
   --out gen/qz.json.h \
