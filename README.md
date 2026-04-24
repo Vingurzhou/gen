@@ -1,6 +1,8 @@
 # gen
 
-## buf
+## 生成语言代码
+
+### buf
 
 ### 参考文档
 
@@ -10,17 +12,15 @@
 
 buf dep update
 
-### 生成语言代码
-
 buf generate --include-imports
-
-### 生成 FileDescriptorSet
 
 buf build -o descriptor.pb --as-file-descriptor-set
 
-## goctl
-
-### 生成语言代码
+### goctl
 
 goctl api go -api alarm.api -dir .
 goctl-darwin-1.1.4  api go -api task.api -dir .
+
+### json
+
+<https://app.quicktype.io/>

@@ -26,3 +26,10 @@ plugins:
     out: /Users/zhouwenzhe/Code/microsate/keymgr/include
   # - local: /Users/zhouwenzhe/Code/microsate/keymgr/build/vcpkg_installed/arm64-osx/tools/grpc/grpc_cpp_plugin
   #   out: gen/cpp
+
+  - remote: buf.build/protocolbuffers/python
+    out: /Users/zhouwenzhe/Code/microsate/qz/gen
+  - remote: buf.build/grpc/python
+    out: /Users/zhouwenzhe/Code/microsate/qz/gen
+  - remote: buf.build/protocolbuffers/pyi
+    out: /Users/zhouwenzhe/Code/microsate/qz/gen

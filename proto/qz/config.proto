@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package keymgr.config;
+package qz;
 
 option go_package = "keymgr/proto/gen/go/pb;pb";
 
@@ -9,6 +9,8 @@ message Config {
     string host = 1;
     uint32 port = 2;
   }
-  Service key_mgr = 1;
-  string data_source = 2;
+  Service mtp = 1;
+  Service rts = 2;
+  Service uhs = 3;
+  Service gnc = 4;
 }
