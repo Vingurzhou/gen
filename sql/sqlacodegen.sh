@@ -1,0 +1,1 @@
+/Users/zhouwenzhe/Code/gen/.conda/bin/python -m sqlacodegen mysql+pymysql://root:Z00a0319@127.0.0.1:3306/cmd > gen/cmd_sql.py
