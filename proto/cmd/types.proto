@@ -113,7 +113,7 @@ message Satellite {
   string sendTypeName = 16; // 发送类型名称
   enum FillType {
     FILL_TYPE_UNSPECIFIED = 0;
-    FILL_TYPE_CYDM = 1; // CY地面系统
+    FILL_TYPE_CYDM = 1; // JGCY-遥控协议V1.0
     FILL_TYPE_MSC = 2; // MSC遥控帧格式1.1
     FILL_TYPE_ETRESS = 3; // ETRSS-2-CK-BG-02 埃塞俄比亚ETRSS-2卫星遥控数据格式约定（国外s）
     FILL_TYPE_ZHTW = 4; // TN1-03-CK-BG-02 智慧天网一号03星遥控数据格式约定
