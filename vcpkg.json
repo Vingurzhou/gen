@@ -1,5 +1,21 @@
 {
   "dependencies": [
-    "nlohmann-json"
+    "fmt",
+    "sqlite3",
+    "spdlog",
+    "libhv",
+    "nlohmann-json",
+    "concurrentqueue",
+    "librdkafka",
+    "hiredis",
+    "stduuid",
+    "tiff",
+    "libmysql"
+  ],
+  "overrides": [
+    {
+      "name": "fmt",
+      "version": "9.1.0"
+    }
   ]
 }
