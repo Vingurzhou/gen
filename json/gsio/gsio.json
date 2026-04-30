@@ -1,0 +1,30 @@
+{
+    "SendCmdReq": {
+        "satId": "SAT001",
+        "sendMode": "transform",
+        "cmdId": "cmd_001",
+        "cmd": "AABBCCDD",
+        "cmdCheck": 8,
+        "destId": 1,
+        "encrypt": true,
+        "encryptDetail": "xxx",
+        "scramble": true,
+        "scrambleDetail": "xxx",
+        "debug": false
+    },
+    "SendCmdResp": {
+        "code": 200,
+        "msg": "ok",
+        "data": {
+            "success": true,
+            "cmdId": "cmd_001",
+            "startSendUtc": "2026-04-30T12:00:00",
+            "sentUtc": "2026-04-30T12:00:00.123",
+            "sent": "AABBCCDD",
+            "encrypt": true,
+            "scramble": true,
+            "destId": 1,
+            "remarks": ""
+        }
+    }
+}
