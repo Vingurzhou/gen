@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package qz;
+package qz.v1;
 
-option go_package = "keymgr/proto/gen/go/pb;pb";
+option go_package = "qz/proto/gen/go/pb;pb";
 
 message Config {
   message Service {

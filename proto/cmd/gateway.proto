@@ -72,6 +72,7 @@ message FillCMDTaskReq {
   string taskID = 2;
   repeated cmd.types.Param paramList = 3;
   string delayTime = 4;
+  string decimalDelayTime = 5;
 }
 
 message FillCMDTaskResp {
@@ -137,9 +138,7 @@ message UploadFileResp {
   string path = 1;
 }
 
-message GetSatelliteInfoReq {
-  string name = 1;
-}
+message GetSatelliteInfoReq {}
 
 message GetSatelliteInfoResp {
   cmd.types.Satellite satellite = 1;
@@ -203,6 +202,13 @@ message GetSubSystemListReq {}
 
 message GetSubSystemListResp {
   repeated string nameList = 1;
+}
+
+message ExportTaskListExcelRequest {
+  repeated string task_id_list = 1;
+}
+message ExportTaskListExcelResponse {
+  string file_path = 2;
 }
 
 //
@@ -344,6 +350,13 @@ service Gateway {
   rpc GetSubSystemList(GetSubSystemListReq) returns (GetSubSystemListResp) {
     option (google.api.http) = {
       post: "/v1/cmd/getsubsystemlist"
+      body: "*"
+    };
+  }
+  // 导出指令任务列表为excel
+  rpc ExportTaskListExcel(ExportTaskListExcelRequest) returns (ExportTaskListExcelResponse) {
+    option (google.api.http) = {
+      post: "/v1/cmd/exporttasklistexcel"
       body: "*"
     };
   }

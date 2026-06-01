@@ -1,0 +1,38 @@
+{
+    "SendCmdReq": {
+        "satId": "djjg",
+        "chn": 0,
+        "sendMode": "SEND_TYPE_TRANSFORM",
+        "encrypt": false,
+        "encryptDetail": "",
+        "scramble": false,
+        "scrambleDetail": "",
+        "cmdId": "2052573848074719232",
+        "cmdType": "FILL_TYPE_SCOE",
+        "cmd": "0x1d004443424d4e4c303100000000000000524c4f474e3a5544534d54504f4e",
+        "cmdCheck": 64,
+        "destId": 224,
+        "destName": "地测(固定)",
+        "more": ""
+    },
+    "SendCmdResp": {
+        "code": 200,
+        "msg": "ok",
+        "data": {
+            "success": true,
+            "cmdId": "cmd_001",
+            "startSendUtc": "2026-04-30T12:00:00",
+            "sentUtc": "2026-04-30T12:00:00.123",
+            "sent": "AABBCCDD",
+            "encrypt": true,
+            "scramble": true,
+            "destId": 1,
+            "remarks": ""
+        }
+    },
+    "ConnTestReq": {},
+    "ConnTestResp": {
+        "code": 200,
+        "msg": "ok"
+    }
+}

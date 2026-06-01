@@ -1,0 +1,21 @@
+{
+    "gateway": {
+        "host": "127.0.0.1",
+        "port": 8888,
+        "dataSource": "root:Z00a0319@tcp(127.0.0.1:3306)/cmd?charset=utf8mb4&parseTime=true&loc=UTC",
+        "redisOptions": {
+            "addr": "127.0.0.1:7001",
+            "password": "",
+            "db": 0
+        },
+        "fileDir": "./data"
+    },
+    "process": {
+        "host": "127.0.0.1",
+        "port": 50051
+    },
+    "gsio": {
+        "host": "127.0.0.1",
+        "port": 3333
+    }
+}

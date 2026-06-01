@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package qz.v1;
+
+option go_package = "qz/proto/gen/go/pb;pb";
+
+message SendReq {
+  string ascii_string = 1;
+}
+message SendResp {
+  int32 code = 1;
+  string msg = 2;
+}

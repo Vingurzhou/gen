@@ -76,6 +76,7 @@ message CMDTask {
   string cplanID = 6; // cplanid
   string metaID = 7; // 元任务id
   string fillReq = 8; // 请求
+  string client_ip = 9;
 }
 
 message CMDRecord {
@@ -123,6 +124,7 @@ message Satellite {
     FILL_TYPE_QZ = 8; // 轻舟一号货运飞船遥测遥控格式约定
     FILL_TYPE_CCSDS_X = 9; // x
     FILL_TYPE_CCSDS = 10; // s
+    FILL_TYPE_SCOE = 11; // 综合测试与对接机构模拟器间通信协议（公开）
   }
   enum SendType {
     SEND_TYPE_UNSPECIFIED = 0;
