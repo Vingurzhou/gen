@@ -211,6 +211,11 @@ message ExportTaskListExcelResponse {
   string file_path = 2;
 }
 
+message ImportTaskListExcelRequest {
+  string file_path = 1;
+}
+message ImportTaskListExcelResponse {}
+
 //
 service Gateway {
   //
@@ -357,6 +362,13 @@ service Gateway {
   rpc ExportTaskListExcel(ExportTaskListExcelRequest) returns (ExportTaskListExcelResponse) {
     option (google.api.http) = {
       post: "/v1/cmd/exporttasklistexcel"
+      body: "*"
+    };
+  }
+  // 导入excel为指令任务列表
+  rpc ImportTaskListExcel(ImportTaskListExcelRequest) returns (ImportTaskListExcelResponse) {
+    option (google.api.http) = {
+      post: "/v1/cmd/importtasklistexcel"
       body: "*"
     };
   }

@@ -74,16 +74,17 @@ message SplitParamList2CMDListResp {
 
 message TaskList2ExcelRequest {
   repeated cmd.types.CMDTask cmd_task_list = 1;
-  repeated cmd.types.CMD cmd_list = 2;
-  cmd.types.Satellite satellite = 3;
-  repeated cmd.types.Param extra_param_list = 5;
 }
 message TaskList2ExcelResponse {
   string file_path = 1;
 }
 
-message Excel2TaskListRequest {}
-message Excel2TaskListResponse {}
+message Excel2TaskListRequest {
+  string file_path = 1;
+}
+message Excel2TaskListResponse {
+  repeated cmd.types.CMDTask cmd_task_list = 1;
+}
 
 ////////////////////////////////////////////////////////////////
 service Process {
