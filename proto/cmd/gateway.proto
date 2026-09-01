@@ -4,6 +4,7 @@ package cmd.gateway;
 
 import "cmd/types.proto";
 import "google/api/annotations.proto";
+import "google/protobuf/type.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "cmd/proto/gen/go/pb;pb";
@@ -81,11 +82,13 @@ message FillCMDTaskResp {
 }
 
 message CreateCMDTaskReq {
-  repeated string markList = 2;
+  repeated string mark_list = 1;
+  string prev_task_id = 2;
+  cmd.types.CMDTask.TaskType task_type = 3;
 }
 
 message CreateCMDTaskResp {
-  repeated string taskID = 1;
+  repeated string task_id_list = 1;
 }
 
 message GetCMDRecordListReq {
@@ -216,8 +219,67 @@ message ImportTaskListExcelRequest {
 }
 message ImportTaskListExcelResponse {}
 
+message ExportFixedTaskListExcelRequest {}
+message ExportFixedTaskListExcelResponse {
+  string file_path = 1;
+}
+
+message SetPriorityHigherThanTaskRequest {
+  string task_id = 1;
+  repeated string mark_list = 2;
+}
+message SetPriorityHigherThanTaskResponse {
+  repeated string task_id_list = 1;
+}
+
+message GetGSIOStatusRequest {}
+message GetGSIOStatusResponse {
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_RUNNING = 1;
+    STATUS_DEAD = 2;
+  }
+  Status status = 1;
+}
+
+message GetTeleMetryCMDCountRequest {}
+message GetTeleMetryCMDCountResponse {
+  int64 count = 1;
+}
+
+message GetTeleMetryDataRequest {}
+message GetTeleMetryDataResponse {}
+
+message ExportRepeatParamListExcelRequest {
+  string task_id = 1;
+  string front_time_zone = 2;
+}
+message ExportRepeatParamListExcelResponse {
+  string file_path = 1;
+}
+
+message CreateCustomCMDTaskRequest {
+  cmd.types.CMDTask cmd_task = 1;
+}
+message CreateCustomCMDTaskResponse {
+  string task_id = 1;
+}
+
+message CreateAndFillCMDTaskRequest {
+  string mark = 1;
+  repeated cmd.types.Param param_list = 2;
+  string delay_time = 3;
+  cmd.types.CMDTask.TaskType task_type = 4;
+  string sat_name = 5;
+  string request_id = 6;
+}
+message CreateAndFillCMDTaskResponse {
+  CreateCMDTaskResp create_resp = 1;
+  FillCMDTaskResp fill_resp = 2;
+}
+
 //
-service Gateway {
+service GatewayService {
   //
   rpc GetCMDList(GetCMDListReq) returns (GetCMDListResp) {
     option (google.api.http) = {
@@ -241,7 +303,7 @@ service Gateway {
     };
   }
 
-  //
+  // 创建任务
   rpc CreateCMDTask(CreateCMDTaskReq) returns (CreateCMDTaskResp) {
     option (google.api.http) = {
       post: "/v1/cmd/createcmdtask"
@@ -279,7 +341,7 @@ service Gateway {
     };
   }
 
-  // 发送指令:根据配置发送指令到gsio并同步返回结果
+  // 发送指令:根据配置和任务发送指令到gsio并同步返回结果
   rpc SendCMDTakList(SendCMDTakListReq) returns (SendCMDTakListResp) {
     option (google.api.http) = {
       post: "/v1/cmd/sendcmdtasklist"
@@ -369,6 +431,62 @@ service Gateway {
   rpc ImportTaskListExcel(ImportTaskListExcelRequest) returns (ImportTaskListExcelResponse) {
     option (google.api.http) = {
       post: "/v1/cmd/importtasklistexcel"
+      body: "*"
+    };
+  }
+  // 导出指令任务列表为excel
+  rpc ExportFixedTaskListExcel(ExportFixedTaskListExcelRequest) returns (ExportFixedTaskListExcelResponse) {
+    option (google.api.http) = {
+      post: "/v1/cmd/exportfixedtasklistexcel"
+      body: "*"
+    };
+  }
+  // 设置优先级高于指定任务
+  rpc SetPriorityHigherThanTask(SetPriorityHigherThanTaskRequest) returns (SetPriorityHigherThanTaskResponse) {
+    option (google.api.http) = {
+      post: "/v1/cmd/setpriorityhigherthantask"
+      body: "*"
+    };
+  }
+  // 获取gsio状态
+  rpc GetGSIOStatus(GetGSIOStatusRequest) returns (GetGSIOStatusResponse) {
+    option (google.api.http) = {
+      post: "/v1/cmd/getgsiostatus"
+      body: "*"
+    };
+  }
+  // 获取遥测指令数
+  rpc GetTeleMetryCMDCount(GetTeleMetryCMDCountRequest) returns (GetTeleMetryCMDCountResponse) {
+    option (google.api.http) = {
+      post: "/v1/cmd/gettelemetrycmdcount"
+      body: "*"
+    };
+  }
+  // 获取遥测数据
+  rpc GetTeleMetryData(GetTeleMetryDataRequest) returns (GetTeleMetryDataResponse) {
+    option (google.api.http) = {
+      post: "/v1/cmd/gettelemetrydata"
+      body: "*"
+    };
+  }
+  // 导出重复参数列表为excel
+  rpc ExportRepeatParamListExcel(ExportRepeatParamListExcelRequest) returns (ExportRepeatParamListExcelResponse) {
+    option (google.api.http) = {
+      post: "/v1/cmd/exportrepeatparamlistexcel"
+      body: "*"
+    };
+  }
+  // 创建自定义任务
+  rpc CreateCustomCMDTask(CreateCustomCMDTaskRequest) returns (CreateCustomCMDTaskResponse) {
+    option (google.api.http) = {
+      post: "/v1/cmd/createcustomcmdtask"
+      body: "*"
+    };
+  }
+  // 创建并填充任务
+  rpc CreateAndFillCMDTask(CreateAndFillCMDTaskRequest) returns (CreateAndFillCMDTaskResponse) {
+    option (google.api.http) = {
+      post: "/v1/cmd/createandfillcmdtask"
       body: "*"
     };
   }

@@ -39,6 +39,7 @@ message ParamList2CMDReq {
 message ParamList2CMDResp {
   cmd.types.CMD cmd = 1;
   repeated cmd.types.Param paramList = 2;
+  bool highlight = 3;
 }
 
 message CMD2ParamListReq {
@@ -86,6 +87,15 @@ message Excel2TaskListResponse {
   repeated cmd.types.CMDTask cmd_task_list = 1;
 }
 
+message RepeatParamList2ExcelRequest {
+  repeated cmd.types.Param param_list = 1;
+  cmd.types.CMD cmd = 2;
+  string front_time_zone = 3;
+}
+message RepeatParamList2ExcelResponse {
+  string file_path = 1;
+}
+
 ////////////////////////////////////////////////////////////////
 service Process {
   rpc Excel2CMDList(Excel2CMDListReq) returns (Excel2CMDListResp);
@@ -96,4 +106,5 @@ service Process {
   rpc SplitParamList2CMDList(SplitParamList2CMDListReq) returns (SplitParamList2CMDListResp);
   rpc TaskList2Excel(TaskList2ExcelRequest) returns (TaskList2ExcelResponse);
   rpc Excel2TaskList(Excel2TaskListRequest) returns (Excel2TaskListResponse);
+  rpc RepeatParamList2Excel(RepeatParamList2ExcelRequest) returns (RepeatParamList2ExcelResponse);
 }

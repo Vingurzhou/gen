@@ -77,6 +77,9 @@ message CMDTask {
   string metaID = 7; // 元任务id
   string fillReq = 8; // 请求
   string client_ip = 9;
+  bool highlight = 10;
+  string rank = 11;
+  repeated CMDTask cmd_task_list = 12;
 }
 
 message CMDRecord {
@@ -92,6 +95,7 @@ message CMDRecord {
   CMDConf cmdConf = 5;
   string gsioSent = 6;
   string id = 7;
+  string reason = 8;
 }
 
 message CMDConf {
@@ -99,6 +103,7 @@ message CMDConf {
   bool encrypted = 3; // 是否加密
   bool scrambled = 4; // 是否加扰
   Destination destination = 5;
+  int32 interval = 6; // 间隔
 }
 
 message Satellite {
